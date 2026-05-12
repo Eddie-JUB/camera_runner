@@ -1,0 +1,36 @@
+FROM dustynv/ros:humble-pytorch-l4t-r35.3.1
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install base packages and ROS2 packages
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    python3-pip \
+    ros-humble-realsense2-camera \
+    ros-humble-realsense2-description \
+    ros-humble-rviz2 \
+    ros-humble-rosbag2 \
+    ros-humble-rosbag2-storage-mcap \
+    ros-humble-v4l2-camera \
+    ros-humble-image-transport-plugins \
+    ros-humble-rqt-image-view \
+    ros-humble-rqt-common-plugins \
+    v4l-utils \
+    libzbar0 \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+# On Jetson, PyTorch and TensorRT are pre-installed in the base image.
+# We must use "numpy<2" to maintain compatibility with ROS2 cv_bridge.
+RUN pip3 install --no-cache-dir \
+    ultralytics \
+    "numpy<2" \
+    pyzbar \
+    pypylon \
+    huggingface_hub
+
+WORKDIR /workspace
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+ENV ROS_DOMAIN_ID=55
+
+CMD ["/bin/bash"]
