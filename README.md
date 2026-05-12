@@ -84,6 +84,12 @@ Listens for an incoming UDP stream (usually on port 5000) broadcasted from a Ras
 ./start_pi_camera.sh
 ```
 
+> **Note on the Raspberry Pi side:**
+> You must SSH into your Raspberry Pi and start the camera stream targeting the host PC's IP address (e.g., `172.16.65.217`). Run the following command:
+> ```bash
+> fl@raspberrypi:~ $ rpicam-vid -t 0 --inline --width 4608 --height 2592 --framerate 3 --codec mjpeg -o udp://172.16.65.217:5000
+> ```
+
 ### GoPro Camera
 Connects to a GoPro video stream and wraps it into a ROS 2 topic.
 ```bash
