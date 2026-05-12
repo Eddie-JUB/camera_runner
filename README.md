@@ -89,6 +89,7 @@ Listens for an incoming UDP stream (usually on port 5000) broadcasted from a Ras
 > ```bash
 > fl@raspberrypi:~ $ rpicam-vid -t 0 --inline --width 4608 --height 2592 --framerate 3 --codec mjpeg -o udp://172.16.65.217:5000
 > ```
+> *Why this specific command?* Transmitting uncompressed 12MP (4K+) resolution images over a standard network creates a massive communication bottleneck. By using the `--codec mjpeg` flag over a `udp://` stream, we compress the data at the source on the Raspberry Pi, drastically reducing bandwidth requirements and latency while maintaining high-resolution frames for the downstream perception pipeline.
 
 ### GoPro Camera
 Connects to a GoPro video stream and wraps it into a ROS 2 topic.
